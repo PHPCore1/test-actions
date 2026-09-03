@@ -2,9 +2,13 @@ name: Configure
 on:
   workflow_dispatch:
   pull_request:
+permissions:
+  contents: read
 jobs:
   ansible:
     runs-on: ['ubuntu-latest']
+    env:
+      GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
     steps:
 #      - uses: actions/checkout@v7
 #      - uses: actions/setup-python@v7
@@ -13,5 +17,6 @@ jobs:
 #          cache: 'pip'
 #      - run: pip install -r requirements.txt
       - run: gh auth status
-        env:
-          GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - run: gh auth setup-git
+      - run: git config --global --list
+      - run: git clone https://github.com/PHPCore1/toy-projects
